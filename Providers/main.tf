@@ -1,41 +1,20 @@
-provider "kubernetes" {
-  config_path = "~/.kube/config"
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
 }
 
-resource "kubernetes_deployment" "tf-k8s-deployment" {
-  metadata {
-    name = "tf-k8s-deploy"
-    labels = {
-      name = "terraform-k8s-deployment"
-    }
-  }
-
-  spec {
-    replicas = 2
-
-    selector {
-      match_labels = {
-        name = "terraform-k8s-deployment"
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          name = "terraform-k8s-deployment"
-        }
-      }
-
-      spec {
-        container {
-          image = "nginx"
-          name  = "nginx"
-
-        }
-      }
-    }
-  }
+provider "aws" {
+  alias  = "us-west-2"
+  region = "us-west-2"
 }
 
 
+resource "aws_sns_topic" "topic-us-east" {
+  provider = aws.us-east-1
+  name     = "topic-us-east"
+}
 
+resource "aws_sns_topic" "topic-us-west" {
+  provider = aws.us-west-2
+  name     = "topic-us-west"
+}
