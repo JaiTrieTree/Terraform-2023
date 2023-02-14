@@ -1,0 +1,7 @@
+terraform {
+   backend "remote" {
+     organization = "TrieTree"
+     workspaces {
+       name = "TrieTree"
+     }
+   }
